@@ -18,12 +18,7 @@ function init() {
 	// line is empty, so it begins at the end. Poetic huh?
 	// don't forget to make the dot as well
 	points.push(endPoint);
-	endDot = new createjs.Shape();
-	endDot.graphics.beginFill("#CCC").drawCircle(0, 0, 5);
-	endDot.x = endPoint.x;
-	endDot.y = endPoint.y;
-	stage.addChild(endDot);
-
+	
 	// set up the point coordinate system as well as line segments
 	for (i = 1; i < 100; i++) {
 		// points have constant x, by five. y is sine curve
@@ -38,6 +33,12 @@ function init() {
 		stage.addChild(line);
 		stage.update();
 	}
+
+  endDot = new createjs.Shape();
+	endDot.graphics.beginFill("#CCC").drawCircle(0, 0, 5);
+	endDot.x = endPoint.x;
+	endDot.y = endPoint.y;
+	stage.addChild(endDot);
 
 	// first button. Nothing special
 	var btn1 = stage.addChild(new Button("Hello!", "#F00"));
@@ -136,10 +137,12 @@ Point = function(x, y) {
 	this.y = y;
 }
 
+
 // Button class
 Button = function(label, color) {
 	this.initialize(label, color);
 }
+
 
 // Button prototype is createjs' Container. Set up inheritance
 p = Button.prototype = new createjs.Container();
@@ -257,11 +260,13 @@ drag = function(event) {
 			for (i = dragRect.x; i <= event.stageX; i++) {
 				lines[i-300].alpha = 1;
 				endDot.x = points[i - 300].x + 5;
+        endDot.y = points[i - 300].y;
 			}
 		} else {
 			for (i = dragRect.x; i >= event.stageX; i--) {
 				lines[i-300].alpha = 0;
 				endDot.x = points[i - 300].x + 5;
+        endDot.y = points[i - 300].y;
 			}
 		}
 		// only update the x coordinate
@@ -271,3 +276,6 @@ drag = function(event) {
 }
 
 window.Button = Button;
+
+document.body.onload = init();
+
